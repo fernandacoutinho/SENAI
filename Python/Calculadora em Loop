@@ -1,0 +1,35 @@
+import biblioteca_operacoes as f
+import os
+
+#Escolhendo a operação
+def opcoes():
+    print("\nEscolha: ")
+    print("\n==============================\n")
+    print("1)Soma")
+    print("2)Subtração")
+    print("3)Multiplicação")
+    print("4)Divisão")
+    print("5)Potenciação") 
+    print("6)Radiciação")
+    print("\n==============================\n")
+
+while(True):
+    os.system("cls")
+    a=float(input("Primeiro número: "))
+    b=float(input("Segundo número: "))
+    opcoes()
+    opcao=int(input("Digite o número da opção: "))
+    if opcao == 1:
+        f.soma(a,b)
+    elif opcao == 2:
+        f.subtracao(a,b)
+    elif opcao == 3:
+        f.multiplicacao(a,b)
+    elif opcao == 4: 
+        f.divisao(a,b)
+    elif opcao == 5: 
+        f.potenciacao(a,b)
+    elif opcao == 6: 
+        f.radiciacao(a,b)
+
+    input("Pressione qualquer tecla para continuar: ")
