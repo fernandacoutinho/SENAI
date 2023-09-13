@@ -1,4 +1,7 @@
-import bibliotecas_agenda as f
+import bibliotecas_agenda as f, os
+
+agenda = []
+add = []
 
 while(True):
     opcao = opcoes()
