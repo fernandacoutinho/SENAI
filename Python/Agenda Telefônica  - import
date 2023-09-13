@@ -1,0 +1,15 @@
+import bibliotecas_agenda as f
+
+while(True):
+    opcao = opcoes()
+    os.system("cls")
+    if opcao==1:
+        f.(adicionar())
+    if opcao==2:
+        f.(editar())
+    if opcao==3:
+        f.(mostrar())
+    if opcao==4:
+        f.(excluir())
+    if opcao==5:
+        f.limpar()
