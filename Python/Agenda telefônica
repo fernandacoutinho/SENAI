@@ -1,0 +1,68 @@
+import os
+
+agenda = []
+add = []
+os.system('cls')
+#Função mostrar opções 
+def opcoes():
+    os.system('cls')
+    print ("--------------------------")
+    print ("Opções: ")
+    print ("1) Adicionar")
+    print ("2) Editar")
+    print ("3) Mostrar agenda")
+    print ("4) Excluir")
+    print ("5) Limpar agenda")
+    print ("--------------------------")
+    opcao=int(input("Digite a opção: "))
+    return(opcao)
+#Função de adicionar (1)
+def adicionar():
+    nome=input("Nome: ")
+    numero=int(input("Contato: "))
+
+    add = [nome, numero]
+    agenda.append(add)
+
+#Função editar contato (2)
+def editar():
+    for i in range(0,len(agenda)):
+        print(agenda[i][0])
+        print(agenda[i][1])
+        print("")
+    troca=int(input("Digite a posição do contato na lista: "))
+    troca=troca-1
+    agenda[troca] = [input("Nome: "),input("Contato: ")]
+
+#Função mostrar agenda (3)
+def mostrar():
+    for i in range(0,len(agenda)):
+        print(agenda[i][0])
+        print(agenda[i][1])
+        print("")
+
+#Função excluir contato (4)
+
+def excluir():
+    (mostrar())
+    n=int(input("Digite a posição do contato na lista: "))
+    n=n-1
+    agenda.pop(n)
+
+#Função esvaziar agenda (5)
+def limpar():
+    agenda.clear()
+
+while(True):
+    opcao = opcoes()
+    os.system("cls")
+    if opcao==1:
+        (adicionar())
+    if opcao==2:
+        (editar())
+    if opcao==3:
+        (mostrar())
+    if opcao==4:
+        (excluir())
+    if opcao==5:
+        limpar()
