@@ -1,0 +1,46 @@
+import tkinter as tk
+from collections import deque
+
+fila = deque()
+
+def add_pedido():
+    pedido = entry.get()
+    fila.append(pedido)
+    entry.delete(0, tk.END) # limpando a entrada assim que o pedido é feito
+    atualizar_lista()
+
+def concluir():
+    if fila:
+        pedido_concluido = fila.popleft()
+        print(f"Pedido concluído: {pedido_concluido}")
+        atualizar_lista()
+    else:
+        label = tk.Label(janela, text="A fila de pedidos está vazia!", fg="purple", bg ="white")
+        label.pack()
+
+def atualizar_lista():
+    lista_fila.delete(0, tk.END)  # limpando a lista
+    for pedido in fila:
+        lista_fila.insert(tk.END, pedido)
+
+janela = tk.Tk()
+janela.configure(bg="white")
+janela.title("Pedidos")
+
+label = tk.Label(janela, text="Faça seu pedido:", fg="purple", bg ="white")
+label.pack()
+
+entry = tk.Entry(janela)
+entry.pack()
+
+botao_add = tk.Button(janela, text="Adicionar pedido", command=add_pedido, fg="purple", bg ="white")
+botao_add.pack()
+
+botao_concluir = tk.Button(janela, text="Concluir pedido", command=concluir, fg="purple", bg ="white")
+botao_concluir.pack()
+
+# Adicionando uma lista para mostrar a fila
+lista_fila = tk.Listbox(janela)
+lista_fila.pack()
+
+janela.mainloop()
