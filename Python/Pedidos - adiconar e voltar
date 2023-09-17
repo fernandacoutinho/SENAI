@@ -1,0 +1,39 @@
+import tkinter as tk
+
+pilha = []
+
+def add():
+    pedido = entry.get()
+    pilha.append(pedido)
+    entry.delete(0, tk.END)
+    atualizar_lista()
+
+def voltar():
+    pilha.pop()
+    atualizar_lista()
+
+def atualizar_lista():
+    lista_pilha.delete(0, tk.END) 
+    for pedido in pilha:
+        lista_pilha.insert(tk.END, pedido)
+
+janela = tk.Tk()
+janela.configure(bg="white")
+janela.title("Pedidos")
+
+label = tk.Label(janela, text="Faça seu pedido:", fg="purple", bg ="white")
+label.pack()
+
+entry = tk.Entry(janela)
+entry.pack()
+
+botao_add = tk.Button(janela, text="Adicionar pedido", command=add, fg="purple", bg ="white")
+botao_add.pack()
+
+botao_voltar = tk.Button(janela, text="Voltar", command=voltar, fg="purple", bg ="white")
+botao_voltar.pack()
+
+lista_pilha = tk.Listbox(janela)
+lista_pilha.pack()
+
+janela.mainloop()
