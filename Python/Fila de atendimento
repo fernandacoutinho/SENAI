@@ -1,0 +1,49 @@
+import tkinter as tk
+from collections import deque
+
+fila = deque()
+janela = tk.Tk()
+janela.configure(bg="white")
+janela.title("Atendimento: ")
+
+registro = 1
+
+def add_paciente():
+    global registro  # Usar a variável registro globalmente
+    paciente = (registro, entry.get())
+    fila.append(paciente)
+    entry.delete(0, tk.END)
+    registro += 1  # Incrementar a variável registro
+    atualizar_lista()
+
+def atualizar_lista():
+    lista_fila.delete(0, tk.END)
+    for pedido in fila:
+        lista_fila.insert(tk.END, pedido)
+
+def chamar_paciente():
+    if fila:
+        paciente_chamado = fila.popleft()
+        label = tk.Label(janela, text=f"Paciente chamado:{paciente_chamado}", fg="purple", bg="white")
+        label.pack()
+        atualizar_lista()
+    else:
+        label = tk.Label(janela, text="Não há nenhum paciente para ser chamado!", fg="purple", bg="white")
+        label.pack()
+
+label = tk.Label(janela, text="Nome do paciente:", fg="purple", bg="white")
+label.pack()
+
+entry = tk.Entry(janela)
+entry.pack()
+
+botao_add = tk.Button(janela, text="Inserir paciente", command=add_paciente, fg="purple", bg="white")
+botao_add.pack()
+
+botao_chamar = tk.Button(janela, text="Chamar próximo paciente", command=chamar_paciente, fg="purple", bg="white")
+botao_chamar.pack()
+
+lista_fila = tk.Listbox(janela)
+lista_fila.pack()
+
+janela.mainloop()
