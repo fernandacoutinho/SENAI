@@ -3,47 +3,84 @@ from collections import deque
 
 fila = deque()
 janela = tk.Tk()
-janela.configure(bg="white")
-janela.title("Atendimento: ")
+janela.configure(bg="lightseagreen")
+janela.title("Atendimento na Clínica")
 
-registro = 1
+registro = 1 
 
 def add_paciente():
-    global registro  # Usar a variável registro globalmente
+    global registro
     paciente = (registro, entry.get())
     fila.append(paciente)
     entry.delete(0, tk.END)
-    registro += 1  # Incrementar a variável registro
+    registro += 1
     atualizar_lista()
 
 def atualizar_lista():
     lista_fila.delete(0, tk.END)
     for pedido in fila:
-        lista_fila.insert(tk.END, pedido)
+        lista_fila.insert(tk.END, f"{pedido[0]}: {pedido[1]}")
 
 def chamar_paciente():
     if fila:
         paciente_chamado = fila.popleft()
-        label = tk.Label(janela, text=f"Paciente chamado:{paciente_chamado}", fg="purple", bg="white")
+        label = tk.Label(janela, text=f"Próximo paciente: {paciente_chamado[1]}", font=("Arial", 12), fg="white", bg="lightseagreen")
         label.pack()
         atualizar_lista()
     else:
-        label = tk.Label(janela, text="Não há nenhum paciente para ser chamado!", fg="purple", bg="white")
+        label = tk.Label(janela, text="Não há nenhum paciente para ser chamado!", font=("Arial", 12), fg="white", bg="lightseagreen")
         label.pack()
 
-label = tk.Label(janela, text="Nome do paciente:", fg="purple", bg="white")
-label.pack()
+def pesquisar():
+    nome_pesquisa = entry.get()
+    entry.delete(0, tk.END)
+    paciente_encontrado = None
 
-entry = tk.Entry(janela)
-entry.pack()
+    for paciente in fila:
+        if paciente[1] == nome_pesquisa:
+            paciente_encontrado = paciente
+            break
 
-botao_add = tk.Button(janela, text="Inserir paciente", command=add_paciente, fg="purple", bg="white")
-botao_add.pack()
+    if paciente_encontrado:
+        label = tk.Label(janela, text=f"Paciente encontrado: {paciente_encontrado[1]}", font=("Arial", 12), fg="black", bg="lightseagreen")
+        label.pack()
+    else:
+        label = tk.Label(janela, text="Paciente não encontrado na fila!", font=("Arial", 12), fg="black", bg="lightseagreen")
+        label.pack()
 
-botao_chamar = tk.Button(janela, text="Chamar próximo paciente", command=chamar_paciente, fg="purple", bg="white")
-botao_chamar.pack()
 
-lista_fila = tk.Listbox(janela)
+frame_cabecalho = tk.Frame(janela, bg="lightseagreen")
+frame_cabecalho.pack(pady=10)
+
+label_cabecalho = tk.Label(frame_cabecalho, text="Clínica Médica", font=("Arial", 18), fg="white", bg="lightseagreen")
+label_cabecalho.pack()
+
+frame_entrada = tk.Frame(janela, bg="lightseagreen")
+frame_entrada.pack(pady=10)
+
+label_nome = tk.Label(frame_entrada, text="Nome do paciente:", font=("Arial", 12), fg="white", bg="lightseagreen")
+label_nome.pack(side=tk.LEFT)
+
+entry = tk.Entry(frame_entrada, font=("Arial", 12))
+entry.pack(side=tk.LEFT)
+
+frame_botoes = tk.Frame(janela, bg="lightseagreen")
+frame_botoes.pack(pady=10)
+
+botao_add = tk.Button(frame_botoes, text="Inserir paciente", command=add_paciente, font=("Arial", 12), fg="black", bg="white")
+botao_add.pack(side=tk.LEFT)
+
+botao_chamar = tk.Button(frame_botoes, text="Chamar próximo paciente", command=chamar_paciente, font=("Arial", 12), fg="black", bg="white")
+botao_chamar.pack(side=tk.LEFT)
+
+botao_pesquisar = tk.Button(frame_botoes, text="Pesquisar paciente", command=pesquisar, font=("Arial", 12), fg="black", bg="white")
+botao_pesquisar.pack(side=tk.LEFT)
+
+frame_lista = tk.Frame(janela, bg="lightseagreen")
+frame_lista.pack(pady=10)
+
+lista_fila = tk.Listbox(frame_lista, font=("Arial", 12), width=40, height=10)
 lista_fila.pack()
 
 janela.mainloop()
+
