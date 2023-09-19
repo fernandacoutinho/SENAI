@@ -1,0 +1,92 @@
+import tkinter as tk
+
+livros_por_genero = {}
+
+def adicionar_genero():
+    genero = entry_genero.get()
+    if genero:
+        livros_por_genero[genero] = []
+        label_status.config(text=f"Gênero '{genero}' adicionado.")
+        entry_genero.delete(0, tk.END)
+    else:
+        label_status.config(text="Digite um nome de gênero válido.")
+
+def adicionar_livro():
+    genero = entry_genero.get()
+    titulo = entry_titulo.get()
+    autor = entry_autor.get()
+    
+    if genero and titulo and autor:
+        livro = (titulo, autor)
+        if genero in livros_por_genero:
+            livros_por_genero[genero].append(livro)
+            label_status.config(text=f"Livro '{titulo}' adicionado ao gênero '{genero}'.")
+            entry_titulo.delete(0, tk.END)
+            entry_autor.delete(0, tk.END)
+        else:
+            label_status.config(text=f"Gênero '{genero}' não encontrado.")
+    else:
+        label_status.config(text="Preencha todos os campos.")
+
+def remover_livro():
+    genero = entry_genero.get()
+    if genero in livros_por_genero:
+        if livros_por_genero[genero]:
+            livro_removido = livros_por_genero[genero].pop()
+            label_status.config(text=f"Livro '{livro_removido[0]}' removido do gênero '{genero}'.")
+        else:
+            label_status.config(text=f"Nenhum livro encontrado no gênero '{genero}'.")
+    else:
+        label_status.config(text=f"Gênero '{genero}' não encontrado.")
+
+def mostrar_livro_do_topo():
+    genero = entry_genero.get()
+    if genero in livros_por_genero:
+        if livros_por_genero[genero]:
+            livro_topo = livros_por_genero[genero][-1]
+            label_status.config(text=f"Livro do topo do gênero '{genero}': Título: {livro_topo[0]}, Autor: {livro_topo[1]}.")
+        else:
+            label_status.config(text=f"Nenhum livro encontrado no gênero '{genero}'.")
+    else:
+        label_status.config(text=f"Gênero '{genero}' não encontrado.")
+
+def mostrar_total_de_livros():
+    genero = entry_genero.get()
+    if genero in livros_por_genero:
+        total_livros = len(livros_por_genero[genero])
+        label_status.config(text=f"Total de livros no gênero '{genero}': {total_livros}.")
+    else:
+        label_status.config(text=f"Gênero '{genero}' não encontrado.")
+
+root = tk.Tk()
+root.title("Biblioteca com Pilhas")
+
+label_genero = tk.Label(root, text="Gênero:")
+entry_genero = tk.Entry(root)
+button_adicionar_genero = tk.Button(root, text="Adicionar Gênero", command=adicionar_genero)
+label_status = tk.Label(root, text="")
+
+label_titulo = tk.Label(root, text="Título:")
+entry_titulo = tk.Entry(root)
+label_autor = tk.Label(root, text="Autor:")
+entry_autor = tk.Entry(root)
+button_adicionar_livro = tk.Button(root, text="Adicionar Livro", command=adicionar_livro)
+button_remover_livro = tk.Button(root, text="Remover Livro", command=remover_livro)
+button_livro_do_topo = tk.Button(root, text="Livro do Topo", command=mostrar_livro_do_topo)
+button_total_livros = tk.Button(root, text="Total de Livros", command=mostrar_total_de_livros)
+
+label_genero.grid(row=0, column=0)
+entry_genero.grid(row=0, column=1)
+button_adicionar_genero.grid(row=0, column=2)
+label_status.grid(row=1, columnspan=3)
+
+label_titulo.grid(row=2, column=0)
+entry_titulo.grid(row=2, column=1)
+label_autor.grid(row=2, column=2)
+entry_autor.grid(row=2, column=3)
+button_adicionar_livro.grid(row=3, column=0)
+button_remover_livro.grid(row=3, column=1)
+button_livro_do_topo.grid(row=3, column=2)
+button_total_livros.grid(row=3, column=3)
+
+root.mainloop()
