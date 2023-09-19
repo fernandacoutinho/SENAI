@@ -22,15 +22,17 @@ def atualizar_lista():
         lista_fila.insert(tk.END, f"{pedido[0]}: {pedido[1]}")
 
 def chamar_paciente():
+    global pacientes_restantes
     if fila:
         paciente_chamado = fila.popleft()
-        label = tk.Label(janela, text=f"Próximo paciente: {paciente_chamado[1]}", font=("Arial", 12), fg="white", bg="lightseagreen")
-        label.pack()
+        pacientes_restantes = len(fila)
+        label_telinha.config(text=f"Próximo paciente: {paciente_chamado[1]}")
+        label_telinha2.config(text=f"Pacientes restantes: {pacientes_restantes}")
         atualizar_lista()
     else:
-        label = tk.Label(janela, text="Não há nenhum paciente para ser chamado!", font=("Arial", 12), fg="white", bg="lightseagreen")
-        label.pack()
-        
+        label_telinha.config(text="Não há nenhum paciente para ser chamado!")
+        label_telinha2.config(text="")
+
 def pesquisar():
     nome_pesquisa = entry.get()
     entry.delete(0, tk.END)
@@ -42,12 +44,9 @@ def pesquisar():
             break
 
     if paciente_encontrado:
-        label = tk.Label(janela, text=f"Paciente encontrado: {paciente_encontrado[1]}", font=("Arial", 12), fg="black", bg="lightseagreen")
-        label.pack()
+        label_pesquisa.config(text=f"Paciente encontrado: {paciente_encontrado[1]}", fg="black")
     else:
-        label = tk.Label(janela, text="Paciente não encontrado na fila!", font=("Arial", 12), fg="black", bg="lightseagreen")
-        label.pack()
-
+        label_pesquisa.config(text="Paciente não encontrado na fila!", fg="black")
 
 frame_cabecalho = tk.Frame(janela, bg="lightseagreen")
 frame_cabecalho.pack(pady=10)
@@ -77,9 +76,18 @@ botao_pesquisar = tk.Button(frame_botoes, text="Pesquisar paciente", command=pes
 botao_pesquisar.pack(side=tk.LEFT)
 
 frame_lista = tk.Frame(janela, bg="lightseagreen")
-frame_lista.pack(pady=10)
+frame_lista.pack(pady=20)
 
 lista_fila = tk.Listbox(frame_lista, font=("Arial", 12), width=40, height=10)
 lista_fila.pack()
+
+label_telinha = tk.Label(janela, text="", font=("Arial", 12), fg="white", bg="lightseagreen")
+label_telinha.place(x=10, y=160)
+
+label_telinha2 = tk.Label(janela, text="", font=("Arial", 12), fg="white", bg="lightseagreen")
+label_telinha2.place(x=10, y=190)
+
+label_pesquisa = tk.Label(janela, text="", font=("Arial", 12), fg="black", bg="lightseagreen")
+label_pesquisa.pack()
 
 janela.mainloop()
