@@ -2,7 +2,7 @@ import tkinter as tk
 
 livros_por_genero = {}
 
-def adicionar_genero():
+def add_genero():
     genero = entry_genero.get()
     if genero:
         livros_por_genero[genero] = []
@@ -11,11 +11,10 @@ def adicionar_genero():
     else:
         label_status.config(text="Digite um nome de gênero válido.")
 
-def adicionar_livro():
+def add_livro():
     genero = entry_genero.get()
     titulo = entry_titulo.get()
     autor = entry_autor.get()
-    
     if genero and titulo and autor:
         livro = (titulo, autor)
         if genero in livros_por_genero:
@@ -28,7 +27,7 @@ def adicionar_livro():
     else:
         label_status.config(text="Preencha todos os campos.")
 
-def remover_livro():
+def remover():
     genero = entry_genero.get()
     if genero in livros_por_genero:
         if livros_por_genero[genero]:
@@ -39,7 +38,7 @@ def remover_livro():
     else:
         label_status.config(text=f"Gênero '{genero}' não encontrado.")
 
-def mostrar_livro_do_topo():
+def topo():
     genero = entry_genero.get()
     if genero in livros_por_genero:
         if livros_por_genero[genero]:
@@ -50,7 +49,7 @@ def mostrar_livro_do_topo():
     else:
         label_status.config(text=f"Gênero '{genero}' não encontrado.")
 
-def mostrar_total_de_livros():
+def total():
     genero = entry_genero.get()
     if genero in livros_por_genero:
         total_livros = len(livros_por_genero[genero])
@@ -58,35 +57,37 @@ def mostrar_total_de_livros():
     else:
         label_status.config(text=f"Gênero '{genero}' não encontrado.")
 
-root = tk.Tk()
-root.title("Biblioteca com Pilhas")
+janela = tk.Tk()
+janela.title("Biblioteca de livros")
+janela.configure(bg="white")
 
-label_genero = tk.Label(root, text="Gênero:")
-entry_genero = tk.Entry(root)
-button_adicionar_genero = tk.Button(root, text="Adicionar Gênero", command=adicionar_genero)
-label_status = tk.Label(root, text="")
+label_genero = tk.Label(janela, text="Gênero:",bg= "orange", fg= "white")
+entry_genero = tk.Entry(janela)
+botao_add_genero = tk.Button(janela, text="Adicionar Gênero", command=add_genero,bg= "orange", fg= "white")
 
-label_titulo = tk.Label(root, text="Título:")
-entry_titulo = tk.Entry(root)
-label_autor = tk.Label(root, text="Autor:")
-entry_autor = tk.Entry(root)
-button_adicionar_livro = tk.Button(root, text="Adicionar Livro", command=adicionar_livro)
-button_remover_livro = tk.Button(root, text="Remover Livro", command=remover_livro)
-button_livro_do_topo = tk.Button(root, text="Livro do Topo", command=mostrar_livro_do_topo)
-button_total_livros = tk.Button(root, text="Total de Livros", command=mostrar_total_de_livros)
+label_genero.place(x=10, y=10)
+entry_genero.place(x=70, y=10)
+botao_add_genero.place(x=200, y=10)
 
-label_genero.grid(row=0, column=0)
-entry_genero.grid(row=0, column=1)
-button_adicionar_genero.grid(row=0, column=2)
-label_status.grid(row=1, columnspan=3)
+label_titulo = tk.Label(janela, text="Título:",bg= "orange", fg= "white")
+entry_titulo = tk.Entry(janela)
+label_autor = tk.Label(janela, text="Autor:",bg= "orange", fg= "white")
+entry_autor = tk.Entry(janela)
+botao_add_livro = tk.Button(janela, text="Adicionar Livro", command=add_livro,bg= "orange", fg= "white")
+botao_remover = tk.Button(janela, text="Remover Livro", command=remover,bg= "orange", fg= "white")
+botao_topo = tk.Button(janela, text="Livro do Topo", command=topo,bg= "orange", fg= "white")
+botao_total = tk.Button(janela, text="Total de Livros", command=total,bg= "orange", fg= "white")
 
-label_titulo.grid(row=2, column=0)
-entry_titulo.grid(row=2, column=1)
-label_autor.grid(row=2, column=2)
-entry_autor.grid(row=2, column=3)
-button_adicionar_livro.grid(row=3, column=0)
-button_remover_livro.grid(row=3, column=1)
-button_livro_do_topo.grid(row=3, column=2)
-button_total_livros.grid(row=3, column=3)
+label_titulo.place(x=10, y=50)
+entry_titulo.place(x=70, y=50)
+label_autor.place(x=10, y=80)
+entry_autor.place(x=70, y=80)
+botao_add_livro.place(x=200, y=50)
+botao_remover.place(x=200, y=80)
+botao_topo.place(x=200, y=110)
+botao_total.place(x=200, y=140)
 
-root.mainloop()
+label_status = tk.Label(janela, text="", bg= "white", fg= "orange")
+label_status.place(x=10, y=200)
+
+janela.mainloop()
