@@ -6,8 +6,7 @@ janela = tk.Tk()
 janela.configure(bg="lightseagreen")
 janela.title("Atendimento na Clínica")
 
-registro = 1 
-camadas=0
+registro = 1
 
 def add_paciente():
     global registro
@@ -23,8 +22,6 @@ def atualizar_lista():
         lista_fila.insert(tk.END, f"{pedido[0]}: {pedido[1]}")
 
 def chamar_paciente():
-    global camadas
-    camadas += 1
     if fila:
         paciente_chamado = fila.popleft()
         label = tk.Label(janela, text=f"Próximo paciente: {paciente_chamado[1]}", font=("Arial", 12), fg="white", bg="lightseagreen")
