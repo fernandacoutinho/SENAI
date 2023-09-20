@@ -1,0 +1,33 @@
+import os
+
+lista = []
+op = "1"
+
+# Coletando os dados inseridos pelo usuário - Loop até que op seja diferente de 0
+while (op != "0"):
+    nome = input("Digite seu nome:")
+    data = input("Digite sua data de nascimento: ")
+    lista.append(nome + "-" + data + "\n")
+    op = input("Digite qualquer tecla para continuar ou 0 para sair\n")
+
+arquivo_nome = "arquivo.txt"
+with open(arquivo_nome, "a", encoding='utf-8') as arquivo:
+    arquivo.writelines(lista)
+
+os.system('cls')
+
+# Exibindo o arquivo
+arquivo = open("arquivo.txt", "r")
+for linha in arquivo:
+    print(linha)
+
+# Dividindo os dados em partes e criando uma nova lista
+nova_lista = []
+with open("arquivo.txt", "r") as arquivo:
+    for linha in arquivo:
+        nome, data = linha.strip().split("-")
+        nova_lista.append((nome, data))
+
+# Exibindo a nova lista
+for item in nova_lista:
+    print(item[0],",", item[1])
