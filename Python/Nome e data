@@ -1,0 +1,60 @@
+import os
+import tkinter as tk
+
+def salvar_dados():
+    nome = nome_entry.get()
+    data = data_entry.get()
+    lista.append(nome + "-" + data + "\n")
+    nome_entry.delete(0, tk.END)
+    data_entry.delete(0, tk.END)
+
+def sair():
+    arquivo_nome = "arquivo.txt"
+    with open(arquivo_nome, "a", encoding='utf-8') as arquivo:
+        arquivo.writelines(lista)
+    os.system('cls')
+    janela.destroy()
+
+janela = tk.Tk()
+janela.configure(bg= "white")
+janela.title("Coletor de Dados")
+
+frame = tk.Frame(janela, bg= "white")
+frame.pack(padx=20, pady=20)
+
+label_nome = tk.Label(frame, text="Nome:",fg="Navy", bg= "white",font=("Arial", 12))
+label_nome.pack()
+
+nome_entry = tk.Entry(frame, bg = "GhostWhite",font=("Arial", 12))
+nome_entry.pack()
+
+label_data = tk.Label(frame, text="Data de nascimento:",fg="Navy", bg= "white",font=("Arial", 12))
+label_data.pack()
+
+data_entry = tk.Entry(frame,bg = "GhostWhite",font=("Arial", 12))
+data_entry.pack()
+
+salvar_botao = tk.Button(frame, text="Salvar", command=salvar_dados,fg="Navy", bg = "GhostWhite",font=("Arial", 12))
+salvar_botao.pack()
+
+sair_botao = tk.Button(frame, text="Sair", command=sair,fg="Navy", bg = "GhostWhite",font=("Arial", 12))
+sair_botao.pack()
+
+lista = []
+
+janela.mainloop()
+
+os.system('cls')
+
+arquivo = open("arquivo.txt", "r")
+for linha in arquivo:
+    print(linha)
+
+nova_lista = []
+with open("arquivo.txt", "r") as arquivo:
+    for linha in arquivo:
+        nome, data = linha.strip().split("-")
+        nova_lista.append((nome, data))
+
+for item in nova_lista:
+    print(item[0], ",", item[1])
