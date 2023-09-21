@@ -1,0 +1,60 @@
+import tkinter as tk
+
+carros = [
+    {"marca": "VW", "modelo": "Gol", "ano": 2018, "preco": 45000},
+    {"marca": "Ford", "modelo": "KA", "ano": 2014, "preco": 38000},
+    {"marca": "Honda", "modelo": "Civic", "ano": 2010, "preco": 40000},
+    {"marca": "Honda", "modelo": "Fit", "ano": 2014, "preco": 48000},
+    {"marca": "VW", "modelo": "Jetta", "ano": 2013, "preco": 49000},
+    {"marca": "Ford", "modelo": "Focus", "ano": 2017, "preco": 62000}
+]
+
+def ordenar_carros(tipo):
+    if tipo == "Marca":
+        ordenados = sorted(carros, key=lambda item: item["marca"])
+    elif tipo == "Modelo":
+        ordenados = sorted(carros, key=lambda item: item["modelo"])
+    elif tipo == "Ano":
+        ordenados = sorted(carros, key=lambda item: item["ano"])
+    elif tipo == "Preço":
+        ordenados = sorted(carros, key=lambda item: item["preco"])
+    else:
+        ordenados = carros
+    
+    mostrar_resultados(ordenados)
+
+def mostrar_resultados(lista):
+    resultado.delete(1.0, tk.END)
+    resultado.insert(tk.END, "Marca\tModelo\tAno\tPreço\n")
+    resultado.insert(tk.END, "------------------------------\n")
+    for item in lista:
+        resultado.insert(tk.END, f"{item['marca']}\t{item['modelo']}\t{item['ano']}\t{item['preco']}\n")
+    resultado.insert(tk.END, "------------------------------\n")
+
+def ordenar_botao(tipo):
+    ordenar_carros(tipo)
+
+janela = tk.Tk()
+janela.title("Carros ordenados")
+janela.configure(bg="white")
+janela.geometry("500x300")
+
+frame_cabecalho = tk.Frame(janela, bg="DarkBlue")
+frame_cabecalho.pack(fill=tk.X)
+
+label_cabecalho = tk.Label(frame_cabecalho, text="Carros Disponíveis", font=("Arial", 18), fg="white", bg="DarkBlue")
+label_cabecalho.pack()
+
+opcoes = ["Marca", "Modelo", "Ano", "Preço"]
+
+botao_frame = tk.Frame(janela, pady=10, bg ="white")
+botao_frame.pack()
+
+for opcao in opcoes:
+    botao = tk.Button(botao_frame, text=f"{opcao}", command=lambda opcao=opcao: ordenar_botao(opcao), font=("Arial", 12), fg="white", bg="DarkBlue")
+    botao.pack(side=tk.LEFT, padx=10)
+
+resultado = tk.Text(janela, height=10, width=30)
+resultado.pack(padx=20, pady=20)
+
+janela.mainloop()
