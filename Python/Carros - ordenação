@@ -42,7 +42,7 @@ janela.geometry("500x300")
 frame_cabecalho = tk.Frame(janela, bg="DarkBlue")
 frame_cabecalho.pack(fill=tk.X)
 
-label_cabecalho = tk.Label(frame_cabecalho, text="Carros Disponíveis", font=("Arial", 18), fg="white", bg="DarkBlue")
+label_cabecalho = tk.Label(frame_cabecalho, text="Carros", font=("Arial", 18), fg="white", bg="DarkBlue")
 label_cabecalho.pack()
 
 opcoes = ["Marca", "Modelo", "Ano", "Preço"]
