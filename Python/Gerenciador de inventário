@@ -1,0 +1,155 @@
+import os
+
+inventario = []
+
+# Função para adicionar um produto ao inventário 
+def add():
+    # Coletando as informações do produto 
+    id = int(input("Digite o ID do produto: "))
+    nome = input("Digite o nome do produto: ")
+    preco = float(input("Digite o preço do produto: "))
+    quantidade = int(input("Digite a quantidade: "))
+    categoria = input("Digite a categoria do produto: ")
+
+    # Verificando se já existe um produto com esse ID no inventário
+    for produto in inventario:
+        if produto["id"] == id:
+            print("Já existe um produto com este ID.")
+            return
+
+    # Criando um dicionário para cada novo produto 
+    novo_produto = {
+        "id": id,
+        "nome": nome,
+        "preço": preco,
+        "quantidade": quantidade,
+        "categoria": categoria
+    }
+
+    # Adicione o novo produto ao inventário
+    inventario.append(novo_produto)
+    print("Produto adicionado com sucesso!")
+
+# Função para remover um produto do inventário 
+def remover():
+    id = int(input("Digite o ID do produto que deseja remover: "))
+    for produto in inventario:
+        if produto["id"] == id:
+            inventario.remove(produto)
+            print("Produto removido com sucesso!")
+            return
+    print("Produto não encontrado!")
+
+# Função para alterar um produto já adicionado ao inventário 
+def alterar():
+    id = int(input("Digite o ID do produto que deseja atualizar: "))
+    for produto in inventario:
+        if produto["id"] == id:
+            # o operador or serve para corrigir problemas caso não seja inserido um novo valor
+            nome = input(f"Novo nome ({produto['nome']}): ") or produto["nome"]
+            preco = float(input(f"Novo preço ({produto['preço']}): ") or produto["preço"])
+            quantidade = int(input(f"Nova quantidade ({produto['quantidade']}): ") or produto["quantidade"])
+            categoria = input(f"Nova categoria ({produto['categoria']}): ") or produto["categoria"]
+            produto["nome"] = nome
+            produto["preço"] = preco
+            produto["quantidade"] = quantidade
+            produto["categoria"] = categoria
+            print("Informações atualizadas com sucesso!")
+            return
+    print("Produto não encontrado!")
+
+# Função para listar os produtos de uma categoria específica
+def listar(): 
+    categoria = input("Digite a categoria que deseja listar: ")
+    produtos_categoria = [produto for produto in inventario if produto["categoria"] == categoria]
+    if produtos_categoria:
+        print(f"Produtos na categoria '{categoria}':")
+        for produto in produtos_categoria:
+            print(produto)
+    else:
+        print(f"Nenhum produto encontrado na categoria '{categoria}'!")
+
+# Função para calcular o valor total em estoque
+def calcular():
+    valor_total = 0
+    for produto in inventario:
+        preco_unitario = produto["preço"]
+        quantidade = produto["quantidade"]
+        valor_produto = preco_unitario * quantidade
+        valor_total += valor_produto
+    print(f"Valor total em estoque: R${valor_total:.2f}")
+
+# Função para encontrar produtos com quantidade abaixo de um determinado limite
+def limite_estoque(): 
+    limite = int(input("Digite o limite de quantidade desejado: "))
+    produtos_abaixo = [produto for produto in inventario if produto["quantidade"] < limite]
+    if produtos_abaixo:
+        print(f"Produtos com quantidade abaixo de {limite}:")
+        for produto in produtos_abaixo:
+            print(produto)
+    else:
+        print(f"Nenhum produto encontrado com quantidade abaixo de {limite}!")
+
+#Função para listar os top 5 produtos 
+def top5():
+    produtos_ordenados = sorted(inventario, key=lambda x: x["preço"] * x["quantidade"], reverse=True) 
+    #reverse=True -> ao contrário
+    print("Os 5 produtos mais valiosos são:")
+    for i, produto in enumerate(produtos_ordenados[:5], start=1):
+        print(f"{i}. {produto['nome']} - Valor total: R${produto['preço'] * produto['quantidade']:.2f}")
+
+#Função para buscar um produto pelo nome
+def buscar():
+    pesquisa = input("Digite o nome do produto que deseja buscar: ")
+    resultados = [produto for produto in inventario if pesquisa.lower() in produto['nome'].lower()]
+    if resultados:
+        print(f"Resultados para '{pesquisa}':")
+        for produto in resultados:
+            print(produto)
+    else:
+        print(f"Nenhum produto encontrado para '{pesquisa}'!")
+
+while True:
+    print("\nMENU DE OPÇÕES")
+    print("----------------------------------------------------------")
+    print("1. Adicionar produto")
+    print("2. Remover produto")
+    print("3. Atualizar produto")
+    print("4. Listar produtos por categoria")
+    print("5. Calcular valor total em estoque")
+    print("6. Encontrar produtos com quantidade abaixo do limite")
+    print("7. Top 5 produtos mais valiosos")
+    print("8. Buscar produtos por nome")
+    print("9. Sair")
+    print("----------------------------------------------------------")
+
+    op = input("Digite o número da opção desejada: ")
+
+    if op == "1":
+        os.system('cls')
+        add()
+    elif op == "2":
+        os.system('cls')
+        remover()
+    elif op == "3":
+        os.system('cls')
+        alterar()
+    elif op == "4":
+        os.system('cls')
+        listar()
+    elif op == "5":
+        os.system('cls')
+        calcular()
+    elif op == "6":
+        os.system('cls')
+        limite_estoque()
+    elif op == "7":
+        os.system('cls')
+        top5()
+    elif op == "8":
+        os.system('cls')
+        buscar()
+    elif op == "9":
+        break
+    else:
+        print("Opção inválida. Por favor, escolha uma opção válida.")
