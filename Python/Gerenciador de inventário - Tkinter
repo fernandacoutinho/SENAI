@@ -1,0 +1,240 @@
+import tkinter as tk
+from tkinter import ttk, messagebox
+
+inventario = []
+
+def clear_entries():
+    id_entry.delete(0, tk.END)
+    nome_entry.delete(0, tk.END)
+    preco_entry.delete(0, tk.END)
+    quantidade_entry.delete(0, tk.END)
+    categoria_entry.delete(0, tk.END)
+    limite_entry.delete(0, tk.END)
+
+def add():
+    id = int(id_entry.get())
+    nome = nome_entry.get()
+    preco = float(preco_entry.get())
+    quantidade = int(quantidade_entry.get())
+    categoria = categoria_entry.get()
+
+    for produto in inventario:
+        if produto["id"] == id:
+            messagebox.showerror("Erro", "Já existe um produto com este ID.")
+            return
+
+    novo_produto = {
+        "id": id,
+        "nome": nome,
+        "preço": preco,
+        "quantidade": quantidade,
+        "categoria": categoria
+    }
+
+    inventario.append(novo_produto)
+    clear_entries()
+    messagebox.showinfo("Sucesso", "Produto adicionado com sucesso!")
+
+def remover():
+    id = int(id_remover_entry.get())
+    for produto in inventario:
+        if produto["id"] == id:
+            inventario.remove(produto)
+            id_remover_entry.delete(0, tk.END)
+            messagebox.showinfo("Sucesso", "Produto removido com sucesso!")
+            return
+    messagebox.showerror("Erro", "Produto não encontrado!")
+
+def alterar():
+    id = int(id_alterar_entry.get())
+    for produto in inventario:
+        if produto["id"] == id:
+            nome = nome_alterar_entry.get() or produto["nome"]
+            preco = float(preco_alterar_entry.get()) or produto["preço"]
+            quantidade = int(quantidade_alterar_entry.get()) or produto["quantidade"]
+            categoria = categoria_alterar_entry.get() or produto["categoria"]
+            produto["nome"] = nome
+            produto["preço"] = preco
+            produto["quantidade"] = quantidade
+            produto["categoria"] = categoria
+            clear_entries()
+            messagebox.showinfo("Sucesso", "Informações atualizadas com sucesso!")
+            return
+    messagebox.showerror("Erro", "Produto não encontrado!")
+
+def listar():
+    categoria = categoria_listar_entry.get()
+    produtos_categoria = [produto for produto in inventario if produto["categoria"] == categoria]
+    if produtos_categoria:
+        resultado = f"Produtos na categoria '{categoria}':\n"
+        for produto in produtos_categoria:
+            resultado += f"{produto}\n"
+        clear_entries()
+        messagebox.showinfo("Produtos por Categoria", resultado)
+    else:
+        clear_entries()
+        messagebox.showinfo("Produtos por Categoria", f"Nenhum produto encontrado na categoria '{categoria}'!")
+
+def calcular():
+    valor_total = 0
+    for produto in inventario:
+        preco_unitario = produto["preço"]
+        quantidade = produto["quantidade"]
+        valor_produto = preco_unitario * quantidade
+        valor_total += valor_produto
+    clear_entries()
+    messagebox.showinfo("Valor Total em Estoque", f"Valor total em estoque: R${valor_total:.2f}")
+
+def limite_estoque():
+    limite = int(limite_entry.get())
+    produtos_abaixo = [produto for produto in inventario if produto["quantidade"] < limite]
+    if produtos_abaixo:
+        resultado = f"Produtos com quantidade abaixo de {limite}:\n"
+        for produto in produtos_abaixo:
+            resultado += f"{produto}\n"
+        clear_entries()
+        messagebox.showinfo("Produtos Abaixo do Limite", resultado)
+    else:
+        clear_entries()
+        messagebox.showinfo("Produtos Abaixo do Limite", f"Nenhum produto encontrado com quantidade abaixo de {limite}!")
+
+def top5():
+    produtos_ordenados = sorted(inventario, key=lambda x: x["preço"] * x["quantidade"], reverse=True)
+    resultado = "Os 5 produtos mais valiosos são:\n"
+    for i, produto in enumerate(produtos_ordenados[:5], start=1):
+        resultado += f"{i}. {produto['nome']} - Valor total: R${produto['preço'] * produto['quantidade']:.2f}\n"
+    clear_entries()
+    messagebox.showinfo("Top 5 Produtos", resultado)
+
+def buscar():
+    pesquisa = pesquisa_entry.get()
+    resultados = [produto for produto in inventario if pesquisa.lower() in produto['nome'].lower()]
+    if resultados:
+        resultado = f"Resultados para '{pesquisa}':\n"
+        for produto in resultados:
+            resultado += f"{produto}\n"
+        clear_entries()
+        messagebox.showinfo("Resultados da Busca", resultado)
+    else:
+        clear_entries()
+        messagebox.showinfo("Resultados da Busca", f"Nenhum produto encontrado para '{pesquisa}'!")
+
+def show_frame(frame):
+    frame.tkraise()
+
+window = tk.Tk()
+window.title("Sistema de Inventário")
+window.configure(bg="white")
+
+notebook = ttk.Notebook(window)
+notebook.grid_rowconfigure(0, weight=1)
+notebook.grid_columnconfigure(0, weight=1)
+
+add_frame = ttk.Frame(notebook)
+id_label = tk.Label(add_frame, text="ID:")
+id_entry = tk.Entry(add_frame)
+nome_label = tk.Label(add_frame, text="Nome:")
+nome_entry = tk.Entry(add_frame)
+preco_label = tk.Label(add_frame, text="Preço:")
+preco_entry = tk.Entry(add_frame)
+quantidade_label = tk.Label(add_frame, text="Quantidade:")
+quantidade_entry = tk.Entry(add_frame)
+categoria_label = tk.Label(add_frame, text="Categoria:")
+categoria_entry = tk.Entry(add_frame)
+add_button = tk.Button(add_frame, text="Adicionar produto", command=add)
+
+id_label.grid(row=0, column=0)
+id_entry.grid(row=0, column=1)
+nome_label.grid(row=1, column=0)
+nome_entry.grid(row=1, column=1)
+preco_label.grid(row=2, column=0)
+preco_entry.grid(row=2, column=1)
+quantidade_label.grid(row=3, column=0)
+quantidade_entry.grid(row=3, column=1)
+categoria_label.grid(row=4, column=0)
+categoria_entry.grid(row=4, column=1)
+add_button.grid(row=5, columnspan=2)
+
+remove_frame = ttk.Frame(notebook)
+id_remover_label = tk.Label(remove_frame, text="ID do produto que deseja remover:")
+id_remover_entry = tk.Entry(remove_frame)
+remover_button = tk.Button(remove_frame, text="Remover produto", command=remover)
+
+id_remover_label.grid(row=0, column=0)
+id_remover_entry.grid(row=0, column=1)
+remover_button.grid(row=1, columnspan=2)
+
+update_frame = ttk.Frame(notebook)
+id_alterar_label = tk.Label(update_frame, text="ID do produto para atualizar:")
+id_alterar_entry = tk.Entry(update_frame)
+nome_alterar_label = tk.Label(update_frame, text="Novo nome:")
+nome_alterar_entry = tk.Entry(update_frame)
+preco_alterar_label = tk.Label(update_frame, text="Novo preço:")
+preco_alterar_entry = tk.Entry(update_frame)
+quantidade_alterar_label = tk.Label(update_frame, text="Nova quantidade:")
+quantidade_alterar_entry = tk.Entry(update_frame)
+categoria_alterar_label = tk.Label(update_frame, text="Nova categoria:")
+categoria_alterar_entry = tk.Entry(update_frame)
+alterar_button = tk.Button(update_frame, text="Atualizar produto", command=alterar)
+
+id_alterar_label.grid(row=0, column=0)
+id_alterar_entry.grid(row=0, column=1)
+nome_alterar_label.grid(row=1, column=0)
+nome_alterar_entry.grid(row=1, column=1)
+preco_alterar_label.grid(row=2, column=0)
+preco_alterar_entry.grid(row=2, column=1)
+quantidade_alterar_label.grid(row=3, column=0)
+quantidade_alterar_entry.grid(row=3, column=1)
+categoria_alterar_label.grid(row=4, column=0)
+categoria_alterar_entry.grid(row=4, column=1)
+alterar_button.grid(row=5, columnspan=2)
+
+list_frame = ttk.Frame(notebook)
+categoria_listar_label = tk.Label(list_frame, text="Categoria para listar:")
+categoria_listar_entry = tk.Entry(list_frame)
+listar_button = tk.Button(list_frame, text="Listar por categoria", command=listar)
+
+categoria_listar_label.grid(row=0, column=0)
+categoria_listar_entry.grid(row=0, column=1)
+listar_button.grid(row=1, columnspan=2)
+
+calc_frame = ttk.Frame(notebook)
+calcular_button = tk.Button(calc_frame, text="Calcular valor total", command=calcular)
+
+calcular_button.grid()
+
+limite_frame = ttk.Frame(notebook)
+limite_label = tk.Label(limite_frame, text="Limite de quantidade:")
+limite_entry = tk.Entry(limite_frame)
+limite_button = tk.Button(limite_frame, text="Produtos abaixo do limite", command=limite_estoque)
+
+limite_label.grid(row=0, column=0)
+limite_entry.grid(row=0, column=1)
+limite_button.grid(row=1, columnspan=2)
+
+top5_frame = ttk.Frame(notebook)
+top5_button = tk.Button(top5_frame, text="Top 5 produtos", command=top5)
+
+top5_button.grid()
+
+search_frame = ttk.Frame(notebook)
+pesquisa_label = tk.Label(search_frame, text="Pesquisa por nome:")
+pesquisa_entry = tk.Entry(search_frame)
+buscar_button = tk.Button(search_frame, text="Buscar produto", command=buscar)
+
+pesquisa_label.grid(row=0, column=0)
+pesquisa_entry.grid(row=0, column=1)
+buscar_button.grid(row=1, columnspan=2)
+
+notebook.add(add_frame, text="Adicionar produto")
+notebook.add(remove_frame, text="Remover produto")
+notebook.add(update_frame, text="Atualizar produto")
+notebook.add(list_frame, text="Listar por categoria")
+notebook.add(calc_frame, text="Calcular valor total")
+notebook.add(limite_frame, text="Produtos abaixo do limite")
+notebook.add(top5_frame, text="Top 5 produtos")
+notebook.add(search_frame, text="Buscar produto")
+
+notebook.pack()
+show_frame(add_frame)
+window.mainloop()
