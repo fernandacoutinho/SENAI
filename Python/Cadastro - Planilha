@@ -1,0 +1,103 @@
+import openpyxl
+import os 
+
+# Criar planilha
+wb = openpyxl.load_workbook(r"C:\Users\dev-sistemas-tarde\Desktop\Dev Sistemas Tarde - Fernanda\Banco de dados\cadastro.xlsx")
+
+# Cadastrar clientes
+def cadastrar():
+    os.system('cls')
+    sheet = wb.active
+    print("Digite seus dados: ")
+    nome = input("Nome: ")
+    cpf = input("CPF: ")
+    telefone = input("Telefone: ")
+    email = input("E-mail: ")
+    endereco = input("Endereço: ")
+    data = input("Data de Nascimento: ")
+
+    sheet.append([nome, cpf, telefone, email, endereco, data])
+    wb.save(r"C:\Users\dev-sistemas-tarde\Desktop\Dev Sistemas Tarde - Fernanda\Banco de dados\cadastro.xlsx")
+
+# Listar clientes
+def listar():
+    os.system('cls')
+    sheet = wb.active
+    print("-------------------")
+    print("Listagem de Clientes")
+    print("-------------------")
+    i = 1
+    for row in sheet.iter_rows(min_row=2, values_only=True):
+        nome, cpf, telefone, email, endereco, data = row
+        print ("Usuário ", i)
+        print("Nome:", nome)
+        print("CPF:", cpf)
+        print("Telefone:", telefone)
+        print("E-mail:", email)
+        print("Endereço:", endereco)
+        print("Data de Nascimento:", data)
+        print("-------------------")
+        i = i +1
+# Atualizar clientes
+def atualizar():
+    os.system('cls')
+    sheet = wb.active
+    listar()
+    linha_edit = int(input("Qual cliente deseja atualizar? (informe o número do usuário) ")) + 1
+
+    # Verifica se a linha que o usuário deseja editar existe na planilha
+    if linha_edit <= sheet.max_row:
+        nome = input("Novo Nome: ")
+        cpf = input("Novo CPF: ")
+        telefone = input("Novo Telefone: ")
+        email = input("Novo E-mail: ")
+        endereco = input("Novo Endereço: ")
+        nova_data = input("Nova Data de Nascimento: ")
+
+        # Atualiza os valores diretamente na linha específica
+        sheet.cell(row=linha_edit, column=1, value=nome)
+        sheet.cell(row=linha_edit, column=2, value=cpf)
+        sheet.cell(row=linha_edit, column=3, value=telefone)
+        sheet.cell(row=linha_edit, column=4, value=email)
+        sheet.cell(row=linha_edit, column=5, value=endereco)
+        sheet.cell(row=linha_edit, column=6, value=nova_data)
+
+        wb.save(r"C:\Users\dev-sistemas-tarde\Desktop\Dev Sistemas Tarde - Fernanda\Banco de dados\cadastro.xlsx")
+        print("Cliente atualizado com sucesso!")
+    else:
+        print("Cliente não encontrado.")
+
+# Excluir algum cliente
+def excluir():
+    os.system('cls')
+    sheet = wb.active
+    listar()
+    linha_delete = int(input("Qual cliente deseja excluir? (informe o número do usuário) ")) + 1
+
+    sheet.delete_rows(linha_delete)
+    wb.save(r"C:\Users\dev-sistemas-tarde\Desktop\Dev Sistemas Tarde - Fernanda\Banco de dados\cadastro.xlsx")
+    print("Cliente excluído com sucesso!")
+
+op = 0
+while op != 5: 
+    print("-------------------")
+    print("1. Cadastrar")
+    print("2. Atualizar")
+    print("3. Excluir")
+    print("4. Listar")
+    print("5. Sair")
+    print("-------------------\n")
+    op = int(input("Escolha uma opção: "))
+
+    if op == 1:
+        cadastrar()
+    elif op == 2:
+        atualizar()
+    elif op == 3:
+        excluir()
+    elif op == 4:
+        listar()
+    elif op == 5:
+        break
+    else: 
+        print("Opção inválida")
