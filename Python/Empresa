@@ -1,0 +1,88 @@
+class Funcionario:
+    def __init__(self, nome,salario):
+        self.nome=nome
+        self.salario=salario
+
+    def addAumento(self,valor):
+        if valor >0:
+            self.salario+=valor
+        else: 
+            self.salario=self.salario
+        self.exibe_dados()
+
+    def ganhoAnual(self):
+        self.ganho_total = self.salario*12
+        print(f"Nome: {self.nome}")
+        print(f"Salário: R$ {self.salario}")
+        print("Ganho anual: R$", self.ganho_total)
+    
+    def exibe_dados(self):
+        print(f"Nome: {self.nome}")
+        print(f"Salário: R$ {self.salario}")
+
+class Assistente(Funcionario):
+    # Construtor
+    def __init__(self,nome,salario,num_matricula):
+        super().__init__(nome,salario)
+        self.num_matricula=num_matricula
+
+    def set_nova_matricula(self,nova_matricula):
+        self.num_matricula=nova_matricula
+    
+    def get_num_matricula(self,):
+        return self.num_matricula
+    
+    def exibe_dados(self):
+        super().exibe_dados()
+        print(f"Número de matrícula: {self.num_matricula}")
+
+class Tecnico(Assistente):
+    # Construtor
+    def __init__(self, nome, salario, num_matricula,bonus):
+        super().__init__(nome, salario, num_matricula)
+        self.bonus = bonus
+
+    def ganhoAnual(self):
+        super().ganhoAnual()
+        self.salario+=self.bonus
+        self.ganho_total=self.salario
+
+class Administrativo(Assistente):
+
+    def __init__(self,nome,salario,num_matricula,turno):
+        super().__init__(nome,salario,num_matricula)
+        self.turno=turno
+
+    def ganhoAnual(self):
+        if self.turno == "2":
+            print("Funcionário possui adicional!")
+            self.salario+=200
+        super().ganhoAnual()
+    
+# Cenário de teste funcionário e métodos
+f1 = Funcionario("Fernanda", 100)
+f1.exibe_dados()
+print("---------------------------")
+f1.addAumento(300)
+print("---------------------------")
+f1.ganhoAnual()
+print("---------------------------")
+
+# Cenário de teste Assistente
+a1= Assistente("Gomes", 50, "A123")
+a1.exibe_dados()
+a1.set_nova_matricula("A111")
+print("---------------------------")
+
+# Cenário de teste técnico 
+tec1 = Tecnico("Fe",100,"T9595",100)
+tec1.ganhoAnual()
+print("---------------------------")
+tec1.exibe_dados()
+print("---------------------------")
+
+# Cenário de teste adm
+adm1 = Administrativo("Scaratinho",100,"A256", "2")
+adm1.ganhoAnual()
+print("---------------------------")
+adm1.exibe_dados()
