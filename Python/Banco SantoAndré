@@ -1,0 +1,58 @@
+# Banco SantoAndré
+
+class Cliente:
+    def __init__(self,nome,saldo):
+        self.nome=nome
+        self.saldo=saldo
+        
+class Ouro(Cliente):
+
+    def __init__(self, nome, saldo):
+        super().__init__(nome, saldo)
+
+    def transferir(self,valor):
+        self.valor_descontado=valor+(0.02*valor)+15
+
+class Prata(Cliente):
+    def transferir(self,valor):
+        self.valor_descontado=valor+(0.05*valor)+15
+
+class Bronze(Cliente):
+    def transferir(self,valor):
+        self.valor_descontado=valor+(0.10*valor)+15
+
+def realizar_transferencia(origem,destino,valor):
+    origem.transferir(valor)
+    if origem.saldo-origem.valor_descontado>0:
+        origem.saldo-=origem.valor_descontado
+        destino.saldo+=valor
+        print(f"\nTranferência de R$ {valor} efetuada!\n")
+    else:
+        print("Por favor, verifique o valor de transferência!")
+
+def exibir_dados(self):
+    print("-------------------------------")
+    print(f"Nome: {self.nome}")
+    print(f"Saldo: R$ {self.saldo}")
+
+# Testes
+cliente1=Ouro("Fernanda",500)
+cliente2=Prata("Kaio",500)
+cliente3=Bronze("Gomes",500)
+
+
+exibir_dados(cliente1)
+exibir_dados(cliente2)
+exibir_dados(cliente3)
+
+realizar_transferencia(cliente1,cliente2,100)
+
+exibir_dados(cliente1)
+exibir_dados(cliente2)
+exibir_dados(cliente3)
+
+realizar_transferencia(cliente2,cliente1,200)
+
+exibir_dados(cliente1)
+exibir_dados(cliente2)
+exibir_dados(cliente3)
