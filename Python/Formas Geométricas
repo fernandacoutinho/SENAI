@@ -1,0 +1,47 @@
+class FormaGeometrica:
+    def area(self): 
+        raise NotImplementedError("Subclasse deve implementar método abstrato!")
+    
+class Retangulo(FormaGeometrica):
+    def area(self):
+        return self.base*self.altura
+
+class Circulo(FormaGeometrica):
+    def area(self):
+        return (self.r**2)*3.14
+
+class Triangulo(FormaGeometrica):
+    def area(self):
+        return (self.base*self.altura)/2
+
+class Trapezio(FormaGeometrica):
+    def area(self):
+        return ((self.basemaior + self.basemenor)*self.altura)/2
+    
+# Cenário de teste retângulo 
+retangulo = Retangulo()
+retangulo.base=10
+retangulo.altura=5
+
+# Cenário de teste círculo
+circulo = Circulo()
+circulo.r=5
+
+# Cenário de teste triângulo 
+triangulo = Triangulo()
+triangulo.base=5
+triangulo.altura=5
+
+# Cenário de teste Trapézio 
+trapezio=Trapezio()
+trapezio.basemaior=5
+trapezio.basemenor=5
+trapezio.altura=5
+
+def calcular_area(forma):
+    print(f"Área: {forma.area()}")
+
+calcular_area(retangulo)
+calcular_area(circulo)
+calcular_area(triangulo)
+calcular_area(trapezio)
